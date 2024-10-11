@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %} Needs {% endblock %}
+
+
+{% block content %}
+    <table class="table">
+        <thead class="table-head">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Titile</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+
+        <tbody class="table-body">
+            {% for need in needs %}
+                <tr>
+                    <td>{{need.id}}</td>
+                    <td>{{need.title}}</td>
+                    <td> {{need.description}} </td>
+                </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+<ul>
+
+    {% for need in needs %}
+        <li>{{need}}
+            {% if current_user.is_authenticated %}
+                <a href= "{{url_for('needs.details', id = needs.id)}}">Details</a>
+            {% endif%}
+        </li>
+
+    {% endfor %}
+</ul>
+
+{% endblock%}

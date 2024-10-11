@@ -1,0 +1,64 @@
+{% extends "base.html"%}
+{% block title %} Products Page
+{% endblock %}
+
+{% block content%}
+    <table class="table">
+        <thead class="table-head">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Details</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+
+        <tbody class="table-body">
+            {% for product in products %}
+                <tr>
+                    <td>{{product.id}}</td>
+                    <td>{{product.name}}</td>
+                    <td>
+                        {% if current_user.is_authenticated %}
+                            <button type="button" class="btn btn-light" onclick="window.location.href='{{url_for('products.details', id=product.id)}}'">Details</button>
+                        {% else %}
+                            <button onclick="Loginalert()">Details</button> 
+                        {% endif%}
+                        
+                    </td>
+                    <td> {{product.description}}</td>
+                </tr>
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+ 
+
+    <script type="text/javascript">
+        function Loginalert() {
+            alert("Bro, you have to login first!");
+        }
+
+        function deleteProduct(id){
+            fetch('{{url_for("products.delete", id=id)}}'+ id,{
+                method: 'DELETE'
+            })
+            .then(response => {
+                if(response.ok){
+                    window.location.reload();
+                }
+                else{
+                    console.error('Failed to delete: ', id);
+                }
+            })
+            .catch(error => {
+                console.error('Error during fetching: ', error);
+            });
+        }
+    </script>
+
+
+
+{% endblock %}
